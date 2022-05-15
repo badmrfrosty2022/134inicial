@@ -1,43 +1,63 @@
+import csv
+
 import pytest
 
 from main import somar, subtrair, multiplicar, dividir
 
 
+def ler_csv(arquivo_csv):
+    dados_csv = []
+    try:
+        with open(arquivo_csv, newline='') as massa:
+            campos = csv.reader(massa, delimiter=',')
+            next(campos)
+            for linha in campos:
+                dados_csv.append(linha)
+        return dados_csv
+    except FileNotFoundError:
+        print(f'Arquivo não encontrado: {arquivo_csv}')
+    except Exception as fail:
+        print(f'Falha imprevista: {fail}')
+
+
 def teste_somar():
-    #1 - Configura
+    # 1 - Configura
     numero_a = 8
     numero_b = 7
     resultado_esperado = 15
 
-    #2 - Executa
+    # 2 - Executa
     resultado_obtido = somar(numero_a, numero_b)
 
-    #3 - Valida
+    # 3 - Valida
     assert resultado_obtido == resultado_esperado
 
+
 def teste_subtrair():
-    #1 - Configura
+    # 1 - Configura
     numero_a = 8
     numero_b = 7
     resultado_esperado = 1
 
-    #2 - Executa
+    # 2 - Executa
     resultado_obtido = subtrair(numero_a, numero_b)
 
-    #3 - Valida
+    # 3 - Valida
     assert resultado_obtido == resultado_esperado
 
+
 def teste_multiplicar():
-    #1 - Configura
+    # 1 - Configura
     numero_a = 8
     numero_b = 7
     resultado_esperado = 56
 
-    #2 - Executa
+    # 2 - Executa
     resultado_obtido = multiplicar(numero_a, numero_b)
 
-    #3 - Valida
+    # 3 - Valida
     assert resultado_obtido == resultado_esperado
+
 
 def teste_dividir_positivo():
     # 1 - Configura
@@ -48,10 +68,10 @@ def teste_dividir_positivo():
     # 1.2 - Resultados esperado
     resultado_esperado = 9
 
-    #2 - Executa
+    # 2 - Executa
     resultado_obtido = dividir(numero_a, numero_b)
 
-    #3 - Valida
+    # 3 - Valida
     assert resultado_obtido == resultado_esperado
 
 
@@ -64,15 +84,14 @@ def teste_dividir_negativo():
     # 1.2 - Resultados esperado
     resultado_esperado = 'Não dividiras por zero'
 
-    #2 - Executa
+    # 2 - Executa
     resultado_obtido = dividir(numero_a, numero_b)
 
-    #3 - Valida
+    # 3 - Valida
     assert resultado_obtido == resultado_esperado
 
 
-
-# lista para uso como massa de teste
+# lista para uso como massa de teste (Tupla)
 lista_de_valores = [
     (8, 7, 15),
     (20, 30, 50),
@@ -94,6 +113,16 @@ def teste_somar_leitura_de_lista(numero_a, numero_b, resultado_esperado):
     assert resultado_obtido == resultado_esperado
 
 
+@pytest.mark.parametrize('numero_a, numero_b, resultado_esperado', ler_csv('//Users//eduardo//PycharmProjects//134inicial//vendors//csv//massa_teste_somar_positivo.csv'))
+def teste_somar_leitura_de_csv(numero_a, numero_b, resultado_esperado):
+    # 1 - Configura
+    # Utilizamos a lista como massa de teste
+
+    # 2 - Executa
+    resultado_obtido = somar(int(numero_a), int(numero_b))
+
+    # 3 - Valida
+    assert resultado_obtido == int(resultado_esperado)
 
 # TDD - Test Drive Development
 #       Desenvolvimento Direcionado por Teste
