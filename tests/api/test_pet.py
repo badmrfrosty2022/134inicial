@@ -2,7 +2,7 @@
 
 import pytest
 import requests
-#biblioteca pra testes api
+#biblioteca pra testes API
 
 # variaveis publicas
 url = 'https://petstore.swagger.io/v2/pet'
